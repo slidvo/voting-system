@@ -11,11 +11,9 @@ export class HelloController {
     return this.helloService.getHello();
   }
 
-  @Post("/hello")
+  @Post("/hello-create")
   postHelloWithEmptyBody() {
-    return {
-      title: "postHelloWithEmptyBody respone"
-    }
+    return this.helloService.postHelloWithEmptyBody();
   }
 
   @Post("/hello-with-body")
