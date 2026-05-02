@@ -12,3 +12,17 @@ async function bootstrap() {
 }
 ```
 
+# Если хочешь изолировать контроллер и замокать сервис — делают так:
+```typescript
+const module: TestingModule = await Test.createTestingModule({
+  controllers: [HelloController],
+  providers: [
+    {
+      provide: HelloService,
+      useValue: {
+        getHello: jest.fn().mockReturnValue('Hello World!'), // заглушка
+      },
+    },
+  ],
+}).compile();
+```
