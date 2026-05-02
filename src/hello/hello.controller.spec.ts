@@ -8,7 +8,12 @@ describe('HelloController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [HelloController],
-      providers: [HelloService],
+      providers: [{
+        provide: HelloService,
+        useValue: {
+          getHello: jest.fn().mockReturnValue('Hello World!'),
+        },
+      },],
     }).compile();
 
     controller = module.get<HelloController>(HelloController);
@@ -17,4 +22,9 @@ describe('HelloController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('should return "Hello World!"', () => {
+    expect(controller.getHello()).toBe('Hello World!')
+  })
+
 });
