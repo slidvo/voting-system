@@ -1,12 +1,19 @@
-import { Controller, Get} from '@nestjs/common';
+import { Controller, Get, Post} from '@nestjs/common';
 import { HelloService } from './hello.service';
 
-@Controller('hello')
+@Controller()
 export class HelloController {
   constructor(private readonly helloService: HelloService) {}
 
     @Get()
     getHello(): string {
       return this.helloService.getHello();
+    }
+
+    @Post("/hello")
+    postHelloWithEmptyBody(){
+      return {
+        title: "postHelloWithEmptyBody respone"
+      }
     }
 }
