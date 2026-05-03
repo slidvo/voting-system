@@ -1,7 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { PhotoService } from '@src/photo/photo.service';
 
 @Injectable()
 export class HelloService {
+
+    constructor(
+        private readonly photoService: PhotoService
+    ) { }
+
     getHello(): string {
         return 'Hello World!';
     }
@@ -10,5 +16,9 @@ export class HelloService {
         return {
             title: "postHelloWithEmptyBody respone default created"
         }
+    }
+
+    getPhotos() {
+        return this.photoService.findAll()
     }
 }

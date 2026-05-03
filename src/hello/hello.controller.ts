@@ -23,4 +23,9 @@ export class HelloController {
       ...rqBody
     }
   }
+
+  @Get("/photos")
+  getPhotos(){
+    return this.helloService.getPhotos();
+  }
 }
