@@ -2,6 +2,9 @@
 1. yarn add class-validator class-transformer
 2. user validate pipe in main.ts
 
+# Lib for configs
+yarn add @nestjs/config
+
 ```typescript
 import { ValidationPipe } from '@nestjs/common';
 
