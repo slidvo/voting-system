@@ -1,4 +1,7 @@
-.claude
+!.claude/commands/*
+.claude/agents
+.claude/worktrees
+.claude/settings*
 node_modules
 dist
 *.env
