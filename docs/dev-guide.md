@@ -35,14 +35,7 @@ DB_DATABASE=voting_system
 Запусти контейнер с флагом `--restart always`, чтобы он поднимался автоматически после перезагрузки ПК:
 
 ```bash
-docker run -d \
-  --name voting-postgres \
-  --restart always \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=voting_system \
-  -p 5432:5432 \
-  postgres:16
+docker run -d --name voting-postgres --restart always -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=voting_system -p 5432:5432 postgres:16
 ```
 
 Проверить, что контейнер работает:
