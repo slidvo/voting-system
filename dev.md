@@ -29,3 +29,5 @@ const module: TestingModule = await Test.createTestingModule({
   ],
 }).compile();
 ```
+
+# yarn global add @anthropic-ai/claude-code
