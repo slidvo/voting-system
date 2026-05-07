@@ -17,7 +17,10 @@ export const databaseProviders = [
                 entities: [
                     __dirname + '/../**/*.entity{.ts,.js}',
                 ],
-                synchronize: true,
+                synchronize: config.get<boolean>('ORM_SYNC'),
+                migrations: process.env.NODE_ENV === 'production'
+                    ? ['dist/database/migrations/*.js']
+                    : ['src/database/migrations/*.ts'],
             });
             return dataSource.initialize();
         },
