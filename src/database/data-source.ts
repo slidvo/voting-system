@@ -13,6 +13,8 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [Photo],
-    migrations: ['src/database/migrations/*.ts'],
+    migrations: process.env.NODE_ENV === 'production'
+        ? ['dist/database/migrations/*.js']
+        : ['src/database/migrations/*.ts'],
     synchronize: false,
 });

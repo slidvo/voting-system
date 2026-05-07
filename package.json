@@ -7,8 +7,10 @@
   "license": "UNLICENSED",
   "scripts": {
     "migration:generate": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:generate -d src/database/data-source.ts",
-    "migration:run": "cross-env NODE_ENV=production typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts",
-    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts",
+    "migration:run": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts",
+    "migration:revert": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts",
+    "migration:run:prod": "cross-env NODE_ENV=production typeorm migration:run -d dist/database/data-source.js",
+    "migration:revert:prod": "cross-env NODE_ENV=production typeorm migration:revert -d dist/database/data-source.js",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
