@@ -26,6 +26,7 @@ DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 DB_DATABASE=voting_system
+ORM_SYNC=true
 ```
 
 ### 3. Запустить PostgreSQL
