@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddPhotoTable1778122982900 implements MigrationInterface {
     name = 'AddPhotoTable1778122982900'
