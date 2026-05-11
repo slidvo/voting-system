@@ -15,7 +15,7 @@ export class User {
     @Column({ comment: 'Hashed password of the user' })
     password: string;
 
-    @CreateDateColumn({ comment: 'Timestamp when the user account was created' })
+    @CreateDateColumn({ name: 'created_at', comment: 'Timestamp when the user account was created' })
     createdAt: Date;
 
     @Column({
