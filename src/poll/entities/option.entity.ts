@@ -6,8 +6,12 @@ import { Answer } from "./answer.entity";
 export class Option {
     @PrimaryGeneratedColumn({ comment: "Option ID" })
     id: number;
+
+    //TODO rename text to ?
     @Column({ comment: "Text of the option" })
     text: string;
+
+    //TODO add default value
     @Column({ name: "created_at", comment: "Option creation timestamp" })
     createdAt: Date;
 

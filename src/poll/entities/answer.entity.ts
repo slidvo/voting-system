@@ -13,6 +13,7 @@ export class Answer {
     @Column({ name: "option_id", comment: "Foreign key referencing the selected option" })
     optionId: number;
 
+    //TODO add default value
     @Column({ name: "created_at", comment: "Answer creation timestamp" })
     createdAt: Date;
 

@@ -12,6 +12,7 @@ export class Poll {
     @Column({ comment: "Poll description" })
     description: string;
 
+    //TODO add default value
     @Column({ comment: "Poll creation timestamp" })
     createdAt: Date;
 

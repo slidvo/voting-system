@@ -8,9 +8,11 @@ export class Question {
     @PrimaryGeneratedColumn({ comment: "Question ID" })
     id: number;
 
+    //TODO rename text to ?
     @Column({ comment: "Text of the question" })
     text: string;
 
+    //TODO add default value
     @Column({ comment: "Question creation timestamp" })
     createdAt: Date;
 
