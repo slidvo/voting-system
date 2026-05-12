@@ -1,15 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
-
+import { PollRepository } from './poll.repository';
+//TODO: add repositories and services for options and answers
 @Injectable()
 export class PollService {
+
+  constructor(
+    private readonly pollRepository: PollRepository
+  ) { }
+
   create(createPollDto: CreatePollDto) {
-    return 'This action adds a new poll';
+    return this.pollRepository.create(createPollDto);
   }
 
   findAll() {
-    return `This action returns all poll`;
+    return this.pollRepository.findAll();
   }
 
   findOne(id: number) {
