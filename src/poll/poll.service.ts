@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
 import { PollRepository } from './poll.repository';
-//TODO: add repositories and services for options and answers
 @Injectable()
 export class PollService {
 
