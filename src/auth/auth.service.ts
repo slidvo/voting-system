@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -43,8 +43,19 @@ export class AuthService {
         return this.generateToken(user);
     }
 
+    async validateUser(username: string, pass: string): Promise<any> {
+        const user = await this.userRepository.findOneBy({ email: username });
+        if (user && user.password === pass) {
+            const { password, ...result } = user;
+            return result;
+        }
+        return null;
+    }
+
     private generateToken(user: User): AccessTokenDto {
-        const payload = { sub: user.id, email: user.email };
+        Logger.debug(`User data from DB: ${JSON.stringify(user)}`)
+        const payload = { sub: user.id, email: user.email, permissions: user.permissions };
+        Logger.debug(`jwt payload: ${JSON.stringify(payload)}`)
         return { access_token: this.jwtService.sign(payload) };
     }
 }
