@@ -1,14 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { ConflictException, Injectable, Logger } from '@nestjs/common'
 import { CreatePollDto } from './dto/create-poll.dto'
 import { UpdatePollDto } from './dto/update-poll.dto'
 import { PollRepository } from './poll.repository'
 import { PollsDto } from './dto/polls.dto'
 import { PollDto } from './dto/poll.dto'
+import { AnswersDto } from './dto/answers.dto'
+import { AnswerRepository } from './answer.repository'
 @Injectable()
 export class PollService {
 
   constructor(
-    private readonly pollRepository: PollRepository
+    private readonly pollRepository: PollRepository,
+    private readonly answerRepository: AnswerRepository
   ) { }
 
   create(createPollDto: CreatePollDto) {
@@ -46,6 +49,34 @@ export class PollService {
         }))
       })),
     };
+  }
+
+
+  async savePollAnswers(
+    params: {
+      pollId: number,
+      userId: number,
+      options: number[]
+    }
+  ) {
+    const { userId, pollId, options } = params;
+    const answers = options.map(optionId => ({
+      userId: userId,
+      optionId: optionId,
+      createdAt: new Date()
+    }));
+
+    try {
+      return await this.answerRepository.saveAnswers(answers)
+    }
+    catch (error) {
+      Logger.error("Error saving poll answers:", error);
+      if ((error as any).code === '23505') { // Unique violation error code in PostgreSQL
+        throw new ConflictException('User has already answered this poll!');
+      }
+      throw new Error('Failed to save poll answers');
+    }
+
   }
 
   update(id: number, updatePollDto: UpdatePollDto) {

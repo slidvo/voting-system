@@ -6,7 +6,7 @@ import { Option } from "./option.entity";
 export class Answer {
 
     @PrimaryGeneratedColumn({ comment: "Answer ID" })
-    id: number;
+    id?: number;
 
     @Column({ name: "user_id", comment: "Foreign key referencing the user who submitted the answer" })
     userId: number;
