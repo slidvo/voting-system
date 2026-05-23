@@ -3,6 +3,7 @@ import { CreatePollDto } from './dto/create-poll.dto'
 import { UpdatePollDto } from './dto/update-poll.dto'
 import { PollRepository } from './poll.repository'
 import { PollsDto } from './dto/polls.dto'
+import { PollDto } from './dto/poll.dto'
 @Injectable()
 export class PollService {
 
@@ -26,8 +27,25 @@ export class PollService {
     return { polls: pollsArray }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} poll`;
+  async findOne(id: number): Promise<PollDto> {
+    const poll = await this.pollRepository.findOne(id);
+    if (!poll) {
+      throw new Error(`Poll with ID ${id} not found`);
+    }
+
+    return {
+      id: poll.id,
+      title: poll.title,
+      description: poll.description,
+      questions: poll.questions!.map((question) => ({
+        id: question.id,
+        text: question.text,
+        options: question.options!.map((option) => ({
+          id: option.id,
+          text: option.text
+        }))
+      })),
+    };
   }
 
   update(id: number, updatePollDto: UpdatePollDto) {

@@ -36,4 +36,8 @@ export class PollRepository {
     findAll(): Promise<Poll[]> {
         return this.pollRepository.find({ relations: ["questions", "questions.options"] });
     }
+
+    findOne(id: number): Promise<Poll | null> {
+        return this.pollRepository.findOne({ where: { id }, relations: ["questions", "questions.options"] });
+    }
 }
