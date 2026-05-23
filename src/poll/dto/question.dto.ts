@@ -1,6 +1,9 @@
+import { IsArray, IsString } from "class-validator";
 import { OptionDto } from "./option.dto";
 
 export class QuestionDto {
-    text: string;
-    options: OptionDto[];
+    @IsString()
+    text!: string;
+    @IsArray()
+    options!: OptionDto[];
 }

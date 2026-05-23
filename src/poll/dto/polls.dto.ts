@@ -2,10 +2,10 @@ import { IsArray, IsNumber, IsString } from "class-validator"
 
 export class PollsDto {
     @IsArray()
-    polls: PollDto[]
+    polls: PollsItemDto[]
 }
 
-class PollDto {
+class PollsItemDto {
     @IsNumber()
     id!: number;
     @IsString()
