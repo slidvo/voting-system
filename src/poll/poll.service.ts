@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePollDto } from './dto/create-poll.dto';
-import { UpdatePollDto } from './dto/update-poll.dto';
-import { PollRepository } from './poll.repository';
+import { Injectable, Logger } from '@nestjs/common'
+import { CreatePollDto } from './dto/create-poll.dto'
+import { UpdatePollDto } from './dto/update-poll.dto'
+import { PollRepository } from './poll.repository'
+import { PollsDto } from './dto/polls.dto'
 @Injectable()
 export class PollService {
 
@@ -10,11 +11,19 @@ export class PollService {
   ) { }
 
   create(createPollDto: CreatePollDto) {
-    return this.pollRepository.create(createPollDto);
+    return this.pollRepository.create(createPollDto)
   }
 
-  findAll() {
-    return this.pollRepository.findAll();
+  async findAll(): Promise<PollsDto> {
+    let pollsArray = (await this.pollRepository.findAll()).map((poll) => {
+      return {
+        id: poll.id,
+        title: poll.title,
+        description: poll.description
+      }
+    })
+    Logger.debug(`polls: ${JSON.stringify(pollsArray)}`)
+    return { polls: pollsArray }
   }
 
   findOne(id: number) {
