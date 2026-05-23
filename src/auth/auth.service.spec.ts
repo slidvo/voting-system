@@ -7,6 +7,7 @@ import { JwtService } from "@nestjs/jwt";
 import { ConflictException } from "@nestjs/common";
 import { RegisterBodyRqDto } from "./dto/RegisterBodyRqDto";
 import * as bcrypt from "bcrypt";
+import { Permission } from "@src/common/enums/permissions.enum";
 
 const DATE_1 = new Date();
 
@@ -16,7 +17,7 @@ const MOCK_USER: User = {
     email: "mail@mail.ru",
     password: "hashed",
     createdAt: DATE_1,
-    permissions: [],
+    permissions: [Permission.CREATE_POLL, Permission.WATCH_POLL],
 };
 
 const REGISTER_DTO: RegisterBodyRqDto = {
@@ -67,7 +68,7 @@ describe("AuthService", () => {
             expect(createArg.password).not.toBe(REGISTER_DTO.password);
             expect(await bcrypt.compare(REGISTER_DTO.password, createArg.password)).toBe(true);
             expect(userRepository.save).toHaveBeenCalledWith(MOCK_USER);
-            expect(jwtService.sign).toHaveBeenCalledWith({ sub: MOCK_USER.id, email: MOCK_USER.email });
+            expect(jwtService.sign).toHaveBeenCalledWith({ sub: MOCK_USER.id, email: MOCK_USER.email, permissions: MOCK_USER.permissions });
             expect(result).toEqual({ access_token: "mock.jwt.token" });
         });
 

@@ -43,15 +43,6 @@ export class AuthService {
         return this.generateToken(user);
     }
 
-    async validateUser(username: string, pass: string): Promise<any> {
-        const user = await this.userRepository.findOneBy({ email: username });
-        if (user && user.password === pass) {
-            const { password, ...result } = user;
-            return result;
-        }
-        return null;
-    }
-
     private generateToken(user: User): AccessTokenDto {
         Logger.debug(`User data from DB: ${JSON.stringify(user)}`)
         const payload = { sub: user.id, email: user.email, permissions: user.permissions };
