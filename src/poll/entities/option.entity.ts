@@ -20,8 +20,8 @@ export class Option {
 
     @ManyToOne(() => Question, question => question.options)
     @JoinColumn({ name: "question_id" })
-    question: Question;
+    question?: Question;
 
     @OneToMany(() => Answer, answer => answer.option)
-    answers: Answer[];
+    answers?: Answer[];
 }

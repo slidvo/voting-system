@@ -17,6 +17,6 @@ export class Poll {
     createdAt: Date;
 
     @OneToMany(() => Question, question => question.poll, { cascade: true, onDelete: "CASCADE" })
-    questions: Question[];
+    questions?: Question[];
 
 }

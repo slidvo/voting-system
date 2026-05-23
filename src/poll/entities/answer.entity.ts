@@ -19,5 +19,5 @@ export class Answer {
 
     @ManyToOne(() => Option, option => option.answers)
     @JoinColumn({ name: "option_id" })
-    option: Option;
+    option?: Option;
 }

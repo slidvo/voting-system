@@ -21,9 +21,9 @@ export class Question {
 
     @ManyToOne(() => Poll, poll => poll.questions)
     @JoinColumn({ name: "poll_id" })
-    poll: Poll;
+    poll?: Poll;
 
     @OneToMany(() => Option, option => option.question, { cascade: true, onDelete: "CASCADE" })
-    options: Option[];
+    options?: Option[];
 
 }
