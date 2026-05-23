@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddUniqueIndexToAnswers1779523436528 implements MigrationInterface {
     name = 'AddUniqueIndexToAnswers1779523436528'
