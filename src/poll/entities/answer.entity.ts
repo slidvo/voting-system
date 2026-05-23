@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Option } from "./option.entity";
 
 @Entity({ name: "answers" })
+@Unique(['userId', 'optionId'])
 export class Answer {
 
     @PrimaryGeneratedColumn({ comment: "Answer ID" })
