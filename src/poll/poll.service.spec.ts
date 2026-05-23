@@ -7,6 +7,7 @@ import { Poll } from './entities/poll.entity';
 const mockPollRepository = {
   create: jest.fn(),
   findAll: jest.fn(),
+  findOne: jest.fn(),
 };
 
 describe('PollService', () => {
@@ -70,6 +71,73 @@ describe('PollService', () => {
       const result = await service.findAll();
 
       expect(result).toEqual({ polls: [] });
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return a PollDto with mapped questions and options', async () => {
+      const poll = {
+        id: 1,
+        title: 'Test Poll',
+        description: 'Test desc',
+        createdAt: new Date(),
+        questions: [
+          {
+            id: 10,
+            text: 'Question 1',
+            createdAt: new Date(),
+            options: [
+              { id: 100, text: 'Option A', createdAt: new Date() },
+              { id: 101, text: 'Option B', createdAt: new Date() },
+            ],
+          },
+        ],
+      } as Poll;
+      mockPollRepository.findOne.mockResolvedValue(poll);
+
+      const result = await service.findOne(1);
+
+      expect(mockPollRepository.findOne).toHaveBeenCalledWith(1);
+      expect(result).toEqual({
+        id: 1,
+        title: 'Test Poll',
+        description: 'Test desc',
+        questions: [
+          {
+            id: 10,
+            text: 'Question 1',
+            options: [
+              { id: 100, text: 'Option A' },
+              { id: 101, text: 'Option B' },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should throw an error when poll is not found', async () => {
+      mockPollRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.findOne(42)).rejects.toThrow('Poll with ID 42 not found');
+    });
+
+    it('should return a PollDto with empty questions array', async () => {
+      const poll = {
+        id: 2,
+        title: 'Empty Poll',
+        description: 'No questions',
+        questions: [],
+      } as unknown as Poll;
+      mockPollRepository.findOne.mockResolvedValue(poll);
+
+      const result = await service.findOne(2);
+
+      expect(result).toEqual({
+        id: 2,
+        title: 'Empty Poll',
+        description: 'No questions',
+        questions: [],
+      });
     });
   });
 });
