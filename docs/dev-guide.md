@@ -80,3 +80,5 @@ docker start voting-postgres
 # Посмотреть логи
 docker logs voting-postgres
 ```
+# Миграция бд
+##  yarn migration:generate src/database/migrations/MigrationName
