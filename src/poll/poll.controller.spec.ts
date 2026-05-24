@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PollController } from './poll.controller';
 import { PollService } from './poll.service';
 import { PollRepository } from './poll.repository';
+import { AnswerRepository } from './answer.repository';
 
 describe('PollController', () => {
   let controller: PollController;
@@ -16,6 +17,12 @@ describe('PollController', () => {
           useValue: {
             create: jest.fn(),
             findAll: jest.fn(),
+          }
+        },
+        {
+          provide: AnswerRepository,
+          useValue: {
+            save: jest.fn(),
           }
         }
       ],

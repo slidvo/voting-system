@@ -3,11 +3,16 @@ import { PollService } from './poll.service';
 import { PollRepository } from './poll.repository';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { Poll } from './entities/poll.entity';
+import { AnswerRepository } from './answer.repository';
 
 const mockPollRepository = {
   create: jest.fn(),
   findAll: jest.fn(),
   findOne: jest.fn(),
+};
+
+const mockAnswerRepository = {
+  save: jest.fn(),
 };
 
 describe('PollService', () => {
@@ -18,6 +23,7 @@ describe('PollService', () => {
       providers: [
         PollService,
         { provide: PollRepository, useValue: mockPollRepository },
+        { provide: AnswerRepository, useValue: mockAnswerRepository },
       ],
     }).compile();
 
