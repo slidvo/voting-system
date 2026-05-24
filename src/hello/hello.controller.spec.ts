@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HelloController } from './hello.controller';
 import { HelloService } from './hello.service';
+import { PollGateway } from '@src/poll/poll.gateway';
 
 describe('HelloController', () => {
   let controller: HelloController;
@@ -13,7 +14,8 @@ describe('HelloController', () => {
         useValue: {
           getHello: jest.fn().mockReturnValue('Hello World!'),
         },
-      },],
+      }
+      ],
     }).compile();
 
     controller = module.get<HelloController>(HelloController);

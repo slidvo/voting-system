@@ -8,6 +8,7 @@ import { ConflictException } from "@nestjs/common";
 import { RegisterBodyRqDto } from "./dto/RegisterBodyRqDto";
 import * as bcrypt from "bcrypt";
 import { Permission } from "@src/common/enums/permissions.enum";
+import { PollGateway } from "@src/poll/poll.gateway";
 
 const DATE_1 = new Date();
 
