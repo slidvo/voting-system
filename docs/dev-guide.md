@@ -82,3 +82,6 @@ docker logs voting-postgres
 ```
 # Миграция бд
 ##  yarn migration:generate src/database/migrations/MigrationName
+
+# Add websokets
+## yarn add @nestjs/websockets @nestjs/platform-socket.io socket.io
