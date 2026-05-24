@@ -85,3 +85,4 @@ docker logs voting-postgres
 
 # Add websokets
 ## yarn add @nestjs/websockets @nestjs/platform-socket.io socket.io
+## yarn add -D @types/socket.io
