@@ -1,17 +1,18 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common'
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { CreatePollDto } from './dto/create-poll.dto'
 import { UpdatePollDto } from './dto/update-poll.dto'
 import { PollRepository } from './poll.repository'
 import { PollsDto } from './dto/polls.dto'
 import { PollDto } from './dto/poll.dto'
-import { AnswersDto } from './dto/answers.dto'
 import { AnswerRepository } from './answer.repository'
+import { PollGateway } from './poll.gateway'
 @Injectable()
 export class PollService {
 
   constructor(
     private readonly pollRepository: PollRepository,
-    private readonly answerRepository: AnswerRepository
+    private readonly answerRepository: AnswerRepository,
+    private readonly pollGateway: PollGateway
   ) { }
 
   create(createPollDto: CreatePollDto) {
@@ -65,9 +66,9 @@ export class PollService {
       optionId: optionId,
       createdAt: new Date()
     }));
-
     try {
-      return await this.answerRepository.saveAnswers(answers)
+      await this.answerRepository.saveAnswers(answers)
+      await this.pollGateway.broadcastResults(pollId);
     }
     catch (error) {
       Logger.error("Error saving poll answers:", error);
@@ -86,4 +87,31 @@ export class PollService {
   remove(id: number) {
     return `This action removes a #${id} poll`;
   }
+
+  async getPollResults(pollId: number) {
+    const poll = await this.pollRepository.findOneWithResults(pollId);
+
+    if (!poll) {
+      throw new NotFoundException(`Poll ${pollId} not found`);
+    }
+
+    if (!poll.questions) {
+      throw new NotFoundException(`Poll ${pollId} .questions  not found`);
+    }
+
+    return {
+      pollId: poll.id,
+      title: poll.title,
+      questions: poll.questions.map(question => ({
+        questionId: question.id,
+        text: question.text,
+        options: question.options!.map(option => ({
+          optionId: option.id,
+          text: option.text,
+          votes: option.answers!.length,
+        })),
+      })),
+    };
+  }
+
 }

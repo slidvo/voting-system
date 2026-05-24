@@ -40,4 +40,15 @@ export class PollRepository {
     findOne(id: number): Promise<Poll | null> {
         return this.pollRepository.findOne({ where: { id }, relations: ["questions", "questions.options"] });
     }
+
+    findOneWithResults(pollId: number): Promise<Poll | null> {
+        return this.pollRepository.findOne({
+            where: { id: pollId },
+            relations: [
+                'questions',
+                'questions.options',
+                'questions.options.answers',
+            ],
+        });
+    }
 }
