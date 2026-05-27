@@ -25,7 +25,7 @@ export class PollService {
         id: poll.id,
         title: poll.title,
         description: poll.description,
-        createdBy: poll.creator!.name
+        createdBy: poll.creator.name
       }
     })
     Logger.debug(`polls: ${JSON.stringify(pollsArray)}`)
@@ -81,9 +81,14 @@ export class PollService {
 
   }
 
-  update(id: number, updatePollDto: UpdatePollDto) {
-    return `This action updates a #${id} poll`;
+  async update(id: number, updatePollDto: UpdatePollDto, userId: number) {
+    Logger.debug(`Updating poll with ID ${id}`);
+    const poll = await this.pollRepository.update(id, updatePollDto, userId);
+    Logger.debug(`Update result: ${JSON.stringify(poll)}`);
+    const { title, description, isActive } = poll;
+    return { title, description, isActive };
   }
+
 
   remove(id: number) {
     return `This action removes a #${id} poll`;
@@ -121,7 +126,7 @@ export class PollService {
         id: poll.id,
         title: poll.title,
         description: poll.description,
-        createdBy: poll.creator!.name
+        createdBy: poll.creator.name
       }
     })
     Logger.debug(`polls: ${JSON.stringify(pollsArray)}`)

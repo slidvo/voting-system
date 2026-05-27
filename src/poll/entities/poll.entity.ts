@@ -23,6 +23,9 @@ export class Poll {
     @Column({ comment: "Indicates whether the poll is active and can receive votes", default: true })
     isActive: boolean;
 
+    @Column({ comment: "Poll update timestamp", default: () => "CURRENT_TIMESTAMP", name: "updated_at" })
+    updatedAt: Date;
+
     @ManyToOne(() => User, user => user.polls, { nullable: false })
     @JoinColumn({ name: "created_by" })
     creator: User;

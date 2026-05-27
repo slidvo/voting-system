@@ -52,8 +52,8 @@ export class PollController {
 
   @Patch(':id')
   @Permissions(Permission.UPDATE_POLL)
-  update(@Param('id') id: string, @Body() updatePollDto: UpdatePollDto) {
-    return this.pollService.update(+id, updatePollDto);
+  update(@Param('id') id: string, @Body() updatePollDto: UpdatePollDto, @Request() req) {
+    return this.pollService.update(+id, updatePollDto, req.user.userId);
   }
 
   @Delete(':id')

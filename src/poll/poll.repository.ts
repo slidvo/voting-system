@@ -3,6 +3,7 @@ import { Poll } from "./entities/poll.entity";
 import { Inject, Injectable } from "@nestjs/common";
 import { CreatePollDto } from "./dto/create-poll.dto";
 import { POLL_REPOSITORY } from "./poll.constatns";
+import { UpdatePollDto } from "./dto/update-poll.dto";
 
 @Injectable()
 export class PollRepository {
@@ -34,13 +35,13 @@ export class PollRepository {
     }
 
     findAll(): Promise<Poll[]> {
-        return this.pollRepository.find({ relations: ["questions", "questions.options", "creator"] });
+        return this.pollRepository.find({ relations: ["questions", "questions.options", "creator"], where: { isActive: true } });
     }
 
     findAllByUserId(userId: number): Promise<Poll[]> {
         return this.pollRepository.find({
             where: {
-                createdBy: userId
+                createdBy: userId,
             },
             relations: ["questions", "questions.options", "creator"]
         });
@@ -59,5 +60,16 @@ export class PollRepository {
                 'questions.options.answers',
             ],
         });
+    }
+
+    async update(id: number, updatePollDto: UpdatePollDto, userId: number) {
+        const poll = await this.pollRepository.findOne({ where: { id, createdBy: userId } });
+        if (!poll) {
+            throw new Error(`Poll with ID ${id} not found or you don't have permission to update it`);
+        }
+        
+        Object.assign(poll, updatePollDto, { updatedAt: new Date() });
+        
+        return this.pollRepository.save(poll);
     }
 }
