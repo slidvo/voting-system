@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddIsActiveAndCreatorToPoll1779854966779 implements MigrationInterface {
     name = 'AddIsActiveAndCreatorToPoll1779854966779'

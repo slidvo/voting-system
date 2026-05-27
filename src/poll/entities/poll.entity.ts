@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Question } from "./question.entity";
 import { User } from "../../user/entities/user.entity";
 
@@ -23,8 +23,9 @@ export class Poll {
     @Column({ comment: "Indicates whether the poll is active and can receive votes", default: true })
     isActive: boolean;
 
-    @ManyToOne(() => User, user => user.polls, { nullable: true })
-    creator?: User;
+    @ManyToOne(() => User, user => user.polls, { nullable: false })
+    @JoinColumn({ name: "created_by" })
+    creator: User;
 
     @OneToMany(() => Question, question => question.poll, { cascade: true, onDelete: "CASCADE" })
     questions?: Question[];
