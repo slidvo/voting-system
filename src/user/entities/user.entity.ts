@@ -1,5 +1,6 @@
+import { Poll } from '../../poll/entities/poll.entity';
 import { Permission } from '../../common/enums/permissions.enum';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
@@ -26,4 +27,7 @@ export class User {
         comment: 'List of permissions granted to the user'
     })
     permissions: Permission[]
+
+    @OneToMany(() => Poll, poll => poll.creator)
+    polls: Poll[];
 }
