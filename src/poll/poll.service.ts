@@ -24,11 +24,12 @@ export class PollService {
       return {
         id: poll.id,
         title: poll.title,
-        description: poll.description
+        description: poll.description,
+        createdBy: poll.creator!.name
       }
     })
     Logger.debug(`polls: ${JSON.stringify(pollsArray)}`)
-    return { polls: pollsArray }
+    return { polls: pollsArray, totalPolls: pollsArray.length }
   }
 
   async findOne(id: number): Promise<PollDto> {
@@ -112,6 +113,19 @@ export class PollService {
         })),
       })),
     };
+  }
+
+  async findAllByUserId(userId: number): Promise<PollsDto> {
+    let pollsArray = (await this.pollRepository.findAllByUserId(userId)).map((poll) => {
+      return {
+        id: poll.id,
+        title: poll.title,
+        description: poll.description,
+        createdBy: poll.creator!.name
+      }
+    })
+    Logger.debug(`polls: ${JSON.stringify(pollsArray)}`)
+    return { polls: pollsArray, totalPolls: pollsArray.length }
   }
 
 }

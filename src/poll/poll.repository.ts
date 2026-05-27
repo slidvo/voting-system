@@ -34,11 +34,20 @@ export class PollRepository {
     }
 
     findAll(): Promise<Poll[]> {
-        return this.pollRepository.find({ relations: ["questions", "questions.options"] });
+        return this.pollRepository.find({ relations: ["questions", "questions.options", "creator"] });
+    }
+
+    findAllByUserId(userId: number): Promise<Poll[]> {
+        return this.pollRepository.find({
+            where: {
+                createdBy: userId
+            },
+            relations: ["questions", "questions.options", "creator"]
+        });
     }
 
     findOne(id: number): Promise<Poll | null> {
-        return this.pollRepository.findOne({ where: { id }, relations: ["questions", "questions.options"] });
+        return this.pollRepository.findOne({ where: { id }, relations: ["questions", "questions.options", "creator"] });
     }
 
     findOneWithResults(pollId: number): Promise<Poll | null> {

@@ -25,6 +25,12 @@ export class PollController {
     return this.pollService.findAll();
   }
 
+  @Get("my")
+  @Permissions(Permission.WATCH_POLL)
+  findAllByUserId(@Request() req) {
+    return this.pollService.findAllByUserId(req.user.userId);
+  }
+
   @Get(':id')
   @Permissions(Permission.WATCH_POLL)
   findOne(@Param('id') id: string) {
