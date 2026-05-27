@@ -1,4 +1,14 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePollDto } from './create-poll.dto';
+import { IsBoolean, IsOptional, IsString } from "class-validator";
 
-export class UpdatePollDto extends PartialType(CreatePollDto) {}
+export class UpdatePollDto {
+
+    @IsOptional()
+    @IsString()
+    title?: string;
+    @IsOptional()
+    @IsString()
+    description?: string;
+    @IsOptional()
+    @IsBoolean()
+    isActive?: boolean;
+}
