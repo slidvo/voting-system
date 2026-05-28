@@ -10,6 +10,8 @@ import { AccessTokenDto } from './dto/AccessTokenDto';
 
 @Injectable()
 export class AuthService {
+    private readonly logger = new Logger(AuthService.name);
+
     constructor(
         @Inject(USER_REPOSITORY)
         private readonly userRepository: Repository<User>,
@@ -22,19 +24,29 @@ export class AuthService {
             throw new ConflictException('User with this email already exists');
         }
 
-        const hashedPassword = await bcrypt.hash(dto.password, 10);
-        const user = this.userRepository.create({
-            name: dto.name,
-            email: dto.email,
-            password: hashedPassword,
-        });
-        await this.userRepository.save(user);
-
-        return this.generateToken(user);
+        try {
+            const hashedPassword = await bcrypt.hash(dto.password, 10);
+            const user = this.userRepository.create({
+                name: dto.name,
+                email: dto.email,
+                password: hashedPassword,
+            });
+            await this.userRepository.save(user);
+            return this.generateToken(user);
+        } catch (error) {
+            this.logger.error(`Failed to register user with email ${dto.email}`, error instanceof Error ? error.stack : String(error));
+            throw error;
+        }
     }
 
     async login(dto: LoginDto): Promise<AccessTokenDto> {
-        const user = await this.userRepository.findOneBy({ email: dto.email });
+        let user: User | null;
+        try {
+            user = await this.userRepository.findOneBy({ email: dto.email });
+        } catch (error) {
+            this.logger.error(`DB error while looking up user by email ${dto.email}`, error instanceof Error ? error.stack : String(error));
+            throw error;
+        }
 
         if (!user || !(await bcrypt.compare(dto.password, user.password))) {
             throw new UnauthorizedException('Invalid credentials');
@@ -44,9 +56,7 @@ export class AuthService {
     }
 
     private generateToken(user: User): AccessTokenDto {
-        Logger.debug(`User data from DB: ${JSON.stringify(user)}`)
         const payload = { sub: user.id, email: user.email, permissions: user.permissions };
-        Logger.debug(`jwt payload: ${JSON.stringify(payload)}`)
         return { access_token: this.jwtService.sign(payload) };
     }
 }
