@@ -79,7 +79,7 @@ export class PollController {
   }
 
   @Patch(':id')
-  @Permissions(Permission.UPDATE_POLL)
+  @Permissions(Permission.CREATE_POLL)
   @ApiOperation({ summary: 'Update a poll (owner only)' })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdatePollDto })
