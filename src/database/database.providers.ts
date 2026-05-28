@@ -1,6 +1,9 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { DATA_SOURCE } from './database.constants';
+
+const logger = new Logger('DatabaseProviders');
 
 export const databaseProviders = [
     {
@@ -22,7 +25,12 @@ export const databaseProviders = [
                     ? ['dist/database/migrations/*.js']
                     : ['src/database/migrations/*.ts'],
             });
-            return dataSource.initialize();
+            try {
+                return await dataSource.initialize();
+            } catch (error) {
+                logger.error('Failed to connect to the database', error instanceof Error ? error.stack : String(error));
+                throw error;
+            }
         },
     },
 ];
