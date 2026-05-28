@@ -35,7 +35,7 @@ export class PollService {
   async findOne(id: number): Promise<PollDto> {
     const poll = await this.pollRepository.findOne(id);
     if (!poll) {
-      throw new Error(`Poll with ID ${id} not found`);
+      throw new NotFoundException(`Poll with ID ${id} not found`);
     }
 
     return {

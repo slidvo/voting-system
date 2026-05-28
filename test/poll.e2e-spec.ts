@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe, CanActivate, ExecutionContext, ConflictException } from '@nestjs/common';
+import { INestApplication, ValidationPipe, CanActivate, ExecutionContext, ConflictException, NotFoundException } from '@nestjs/common';
 import request from 'supertest';
 import { PollController } from '../src/poll/poll.controller';
 import { PollService } from '../src/poll/poll.service';
@@ -185,10 +185,10 @@ describe('PollController (e2e)', () => {
       expect(mockPollService.findOne).toHaveBeenCalledWith(1);
     });
 
-    it('should return 500 when poll is not found (service throws Error)', async () => {
-      mockPollService.findOne.mockRejectedValue(new Error('Poll with ID 99 not found'));
+    it('should return 404 when poll is not found', async () => {
+      mockPollService.findOne.mockRejectedValue(new NotFoundException('Poll with ID 99 not found'));
 
-      await request(app.getHttpServer()).get('/poll/99').expect(500);
+      await request(app.getHttpServer()).get('/poll/99').expect(404);
     });
   });
 
@@ -255,15 +255,15 @@ describe('PollController (e2e)', () => {
       );
     });
 
-    it('should return 500 when poll not found or permission denied', async () => {
+    it('should return 404 when poll not found or permission denied', async () => {
       mockPollService.update.mockRejectedValue(
-        new Error("Poll with ID 5 not found or you don't have permission to update it"),
+        new NotFoundException("Poll with ID 5 not found or you don't have permission to update it"),
       );
 
       await request(app.getHttpServer())
         .patch('/poll/5')
         .send({ title: 'X' })
-        .expect(500);
+        .expect(404);
     });
 
     it('should return 400 when isActive is not boolean', async () => {

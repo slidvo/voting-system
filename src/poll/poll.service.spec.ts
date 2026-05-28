@@ -131,9 +131,10 @@ describe('PollService', () => {
       });
     });
 
-    it('should throw an error when poll is not found', async () => {
+    it('should throw NotFoundException when poll is not found', async () => {
       mockPollRepository.findOne.mockResolvedValue(null);
 
+      await expect(service.findOne(42)).rejects.toThrow(NotFoundException);
       await expect(service.findOne(42)).rejects.toThrow('Poll with ID 42 not found');
     });
 
